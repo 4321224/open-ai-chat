@@ -12,13 +12,14 @@ const configuration = new Configuration({
 const openapi = new OpenAIApi(configuration);
 
 const app = express();
+const PORT = process.env.PORT || 8000;
 app.use(cors());
 app.use(express.json());
 
 app.get("/", async (req, res) => {
   try {
     const { prompt } = req.body;
-    const response = await OpenAIApi.createCompletion({
+    const response = await openapi.createCompletion({
       model: "text-001",
       prompt: `${prompt}`,
       temperature: 0,
@@ -35,3 +36,4 @@ app.get("/", async (req, res) => {
     res.status(500).send(error || "Oops Something wrong");
   }
 });
+app.listen(5000, () => console.log(`App Running on port ${PORT}`));
